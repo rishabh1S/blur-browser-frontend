@@ -8,9 +8,7 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
   color: string;
 }) {
-  return (
-    <MaterialCommunityIcons size={28} style={{ marginBottom: -2 }} {...props} />
-  );
+  return <MaterialCommunityIcons size={28} {...props} />;
 }
 
 export default function TabLayout() {
@@ -25,19 +23,31 @@ export default function TabLayout() {
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
           backgroundColor: Colors[colorScheme ?? "light"].background,
-          height: 56,
-          paddingBottom: 0,
-          paddingTop: 4,
+          height: 60,
+          paddingTop: 7,
+          borderRadius: 15,
+          paddingBottom: 0, // ios only
+          position: "absolute",
         },
       }}
     >
       <Tabs.Screen
-        name="tabs"
+        name="history"
         options={{
-          title: "Tabs",
+          title: "History",
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="card-multiple-outline" color={color} />
+            <TabBarIcon name="history" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="bookmarks"
+        options={{
+          title: "Bookmarks",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="pin-outline" color={color} />
           ),
         }}
       />
@@ -46,16 +56,28 @@ export default function TabLayout() {
         options={{
           title: "Home",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home-variant-outline" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
-        name="search"
+        name="tabs"
         options={{
-          title: "Search",
+          title: "Tabs",
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="search-web" color={color} />
+            <TabBarIcon name="square-rounded-outline" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="dots-horizontal-circle-outline" color={color} />
           ),
         }}
       />
