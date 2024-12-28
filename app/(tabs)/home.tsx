@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React, { useState, useRef, useEffect } from "react";
 import {
   View,
@@ -67,7 +68,7 @@ export default function Home() {
     setIsSearchFocused(true);
     Animated.timing(searchBarTop, {
       toValue: 1, // Move to the top
-      duration: 500,
+      duration: 400,
       easing: Easing.inOut(Easing.ease),
       useNativeDriver: false,
     }).start();
@@ -75,7 +76,7 @@ export default function Home() {
     if (showBlur) {
       Animated.timing(blurOpacity, {
         toValue: 1, // Fully visible blur
-        duration: 500,
+        duration: 400,
         useNativeDriver: true,
       }).start();
     }
@@ -134,24 +135,31 @@ export default function Home() {
               style={{
                 marginTop: searchBarTop.interpolate({
                   inputRange: [0, 1],
-                  outputRange: ["60%", "10%"], // Move from center to top
+                  outputRange: ["60%", "0%"], // Move from center to top
                 }),
               }}
-              className="z-10 px-4 py-1"
+              className="z-10"
             >
-              <TextInput
-                value={tempUrl}
-                onChangeText={setTempUrl}
-                placeholder="Search or enter an address"
-                className="w-full px-6 py-4 text-white bg-black/30
-                 border-b-2 border-violet-500
+              <View
+                className={clsx(
+                  "transition-all duration-200 ease-in-out",
+                  isSearchFocused && "bg-zinc-900 pt-12"
+                )}
+              >
+                <TextInput
+                  value={tempUrl}
+                  onChangeText={setTempUrl}
+                  placeholder="Search or enter an address"
+                  className="mx-4 focus:mx-0 px-6 py-4 text-white bg-zinc-900/30
+                 border-b-2 border-violet-500 focus:border-violet-600
                  transition-all duration-200 ease-in-out
                 focus:bg-zinc-900"
-                placeholderTextColor="white"
-                onFocus={focusSearchBar}
-                onSubmitEditing={handleSearch}
-                returnKeyType="go"
-              />
+                  placeholderTextColor="white"
+                  onFocus={focusSearchBar}
+                  onSubmitEditing={handleSearch}
+                  returnKeyType="go"
+                />
+              </View>
             </Animated.View>
 
             {/* WebView or Welcome Screen */}
