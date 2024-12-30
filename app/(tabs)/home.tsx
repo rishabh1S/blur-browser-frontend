@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, BackHandler } from "react-native";
-import { WebView } from "react-native-webview";
+import React, { useState } from "react";
+import { View } from "react-native";
 import BrowserComponent from "~/components/BrowserComponent";
 import HomeComponent from "~/components/HomeComponent";
 
@@ -9,22 +8,6 @@ export default function Home() {
   const [tempUrl, setTempUrl] = useState("");
   const [isBrowsing, setIsBrowsing] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const webViewRef = useRef<WebView>(null);
-
-  const handleBackPress = () => {
-    if (webViewRef.current) {
-      webViewRef.current.goBack();
-      return true;
-    }
-    return false;
-  };
-
-  useEffect(() => {
-    BackHandler.addEventListener("hardwareBackPress", handleBackPress);
-    return () => {
-      BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
-    };
-  }, []);
 
   const handleSearch = () => {
     if (tempUrl.trim() !== "") {
@@ -61,7 +44,6 @@ export default function Home() {
           tempUrl={tempUrl}
           setTempUrl={setTempUrl}
           handleSearch={handleSearch}
-          webViewRef={webViewRef}
           url={url}
           onNavigationStateChange={onNavigationStateChange}
         />

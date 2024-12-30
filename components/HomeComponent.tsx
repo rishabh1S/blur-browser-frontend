@@ -50,7 +50,7 @@ const HomeComponent: React.FC<HomeComponentProps> = ({
     Keyboard.dismiss();
     Animated.timing(searchBarTop, {
       toValue: 0, // Move back to center
-      duration: 500,
+      duration: 400,
       easing: Easing.inOut(Easing.ease),
       useNativeDriver: false,
     }).start();
@@ -68,6 +68,7 @@ const HomeComponent: React.FC<HomeComponentProps> = ({
           {isSearchFocused && (
             <BlurView
               intensity={40}
+              experimentalBlurMethod="dimezisBlurView"
               tint="dark"
               className="absolute top-0 left-0 right-0 bottom-0 z-[5]"
             />
@@ -83,7 +84,7 @@ const HomeComponent: React.FC<HomeComponentProps> = ({
           >
             <View
               className={clsx(
-                "transition-all duration-200 ease-in-out",
+                "transition-all duration-400 ease-in-out",
                 isSearchFocused && "bg-zinc-900 pt-12"
               )}
             >
