@@ -5,23 +5,23 @@ import HomeComponent from "~/components/HomeComponent";
 
 export default function Home() {
   const [url, setUrl] = useState("");
-  const [tempUrl, setTempUrl] = useState("");
+  const [searchString, setSearchString] = useState("");
   const [isBrowsing, setIsBrowsing] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const handleSearch = () => {
-    if (tempUrl.trim() !== "") {
+    if (searchString.trim() !== "") {
       let formattedUrl;
 
       // Check if the input is a valid URL or domain
-      if (/^(https?:\/\/)?([\w.-]+\.[a-z]{2,})(\/\S*)?$/i.test(tempUrl)) {
-        formattedUrl = tempUrl.startsWith("http")
-          ? tempUrl
-          : `https://${tempUrl}`;
+      if (/^(https?:\/\/)?([\w.-]+\.[a-z]{2,})(\/\S*)?$/i.test(searchString)) {
+        formattedUrl = searchString.startsWith("http")
+          ? searchString
+          : `https://${searchString}`;
       } else {
         // Otherwise, treat it as a search query
         formattedUrl = `https://www.google.com/search?q=${encodeURIComponent(
-          tempUrl
+          searchString
         )}`;
       }
 
@@ -34,15 +34,15 @@ export default function Home() {
   const onNavigationStateChange = (navState: {
     url: React.SetStateAction<string>;
   }) => {
-    setTempUrl(navState.url);
+    setSearchString(navState.url);
   };
 
   return (
     <View className="flex-1">
       {isBrowsing ? (
         <BrowserComponent
-          tempUrl={tempUrl}
-          setTempUrl={setTempUrl}
+          searchString={searchString}
+          setSearchString={setSearchString}
           handleSearch={handleSearch}
           url={url}
           onNavigationStateChange={onNavigationStateChange}
@@ -51,8 +51,8 @@ export default function Home() {
         <HomeComponent
           isSearchFocused={isSearchFocused}
           setIsSearchFocused={setIsSearchFocused}
-          tempUrl={tempUrl}
-          setTempUrl={setTempUrl}
+          searchString={searchString}
+          setSearchString={setSearchString}
           handleSearch={handleSearch}
           setIsBrowsing={setIsBrowsing}
           setUrl={setUrl}

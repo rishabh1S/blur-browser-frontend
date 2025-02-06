@@ -16,8 +16,8 @@ import TopSites from "~/components/TopSites";
 interface HomeComponentProps {
   isSearchFocused: boolean;
   setIsSearchFocused: (isFocused: boolean) => void;
-  tempUrl: string;
-  setTempUrl: (url: string) => void;
+  searchString: string;
+  setSearchString: (url: string) => void;
   handleSearch: () => void;
   setIsBrowsing: (isBrowsing: boolean) => void;
   setUrl: (url: string) => void;
@@ -26,8 +26,8 @@ interface HomeComponentProps {
 const HomeComponent: React.FC<HomeComponentProps> = ({
   isSearchFocused,
   setIsSearchFocused,
-  tempUrl,
-  setTempUrl,
+  searchString,
+  setSearchString,
   handleSearch,
   setIsBrowsing,
   setUrl,
@@ -89,8 +89,8 @@ const HomeComponent: React.FC<HomeComponentProps> = ({
               )}
             >
               <TextInput
-                value={tempUrl}
-                onChangeText={setTempUrl}
+                value={searchString}
+                onChangeText={setSearchString}
                 placeholder="Search or enter an address"
                 className="mx-4 focus:mx-0 px-6 py-4 text-white bg-zinc-900/30
                                  border-b-2 border-violet-500 focus:border-violet-600
