@@ -3,6 +3,7 @@ import { Tabs } from "expo-router";
 import { useColorScheme } from "react-native";
 import Colors from "~/lib/Colors";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import AnimatedTabBar from "~/components/AnimatedTabBar";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
@@ -16,6 +17,7 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      tabBar={(props) => <AnimatedTabBar {...props} />}
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,

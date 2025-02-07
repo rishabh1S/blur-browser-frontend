@@ -3,6 +3,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useRef, useState } from "react";
 import WebView from "react-native-webview";
 import Colors from "~/lib/Colors";
+import { useTabBarStore } from "~/hooks/useTabBarStore";
 
 interface BrowserComponentProps {
   searchString: string;
@@ -21,6 +22,35 @@ const BrowserComponent: React.FC<BrowserComponentProps> = ({
 }) => {
   const webViewRef = useRef<WebView>(null);
   const [isSecure, setIsSecure] = useState(false);
+  const { isTabBarVisible, setIsTabBarVisible } = useTabBarStore((state) => ({
+    isTabBarVisible: state.isVisible,
+    setIsTabBarVisible: state.setIsVisible,
+  }));
+
+  const injectedJavaScript = `
+  (() => {
+  let lastY = window.scrollY, accum = 0, lastDir = '';
+  const thresh = 150;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY, delta = y - lastY;
+    lastY = y;
+    if (delta > 0) {
+      accum += delta;
+      if (accum >= thresh && lastDir !== 'down') {
+        lastDir = 'down';
+        window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'scroll', direction: 'down' }));
+        accum = 0;
+      }
+    } else if (delta < 0) {
+      if (lastDir !== 'up') {
+        lastDir = 'up';
+        window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'scroll', direction: 'up' }));
+      }
+      accum = 0;
+    }
+  });
+  })();
+`;
 
   const handleBackPress = () => {
     if (webViewRef.current) {
@@ -69,6 +99,14 @@ const BrowserComponent: React.FC<BrowserComponentProps> = ({
       <WebView
         ref={webViewRef}
         source={{ uri: url }}
+        injectedJavaScript={injectedJavaScript}
+        onMessage={(event) => {
+          const message = JSON.parse(event.nativeEvent.data);
+          if (message.type === "scroll") {
+            setIsTabBarVisible(message.direction === "up");
+          }
+        }}
+        onLoad={() => setIsTabBarVisible(true)}
         className="flex-1"
         onNavigationStateChange={onNavigationStateChange}
         pullToRefreshEnabled
